@@ -13,7 +13,7 @@ of electronic control units in a car, or even in a larger pool of units from sev
 <img width="7905" height="2380" alt="clustering_procedure_bis_bis" src="https://github.com/user-attachments/assets/123e3bfa-bd30-4ea8-a8a9-9575eb65d4b4" />
 </p>
 
-In this specific context, both metrics prove to be more reliable than the widely used Silhouette score, Davies-Bouldin and Calinski-Harabasz indexes. We successfully test our methodology on the largest dataset available today for in-vehicle voltage characteristics and discover new insights regarding the number of devices. In this repository we share only a part of the entire dataset, due to file size constraints.
+In this specific context, both metrics prove to be more reliable than the widely used Silhouette score, Davies-Bouldin and Calinski-Harabasz indexes. We successfully test our methodology on the largest dataset available today for in-vehicle voltage characteristics and discover new insights regarding the number of devices. In this repository we share only a part of the entire dataset, for two passenger vehicles, due to file size constraints.
 
 # Repository 
 The repository contains the python code required to reproduce the results from our work on the provided dataset voltage samples (Honda Civic, Dacia Duster). Steps to run all the provided code are detailed below.
