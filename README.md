@@ -54,7 +54,7 @@ File | Download | Notes
 
 More details related to the bit aligning concept, applied filters and insights related to the dataset structure and file contents are described below.
 
-#### Data pre-processing ####
+### Data pre-processing ###
 
 ECUPrint raw voltage data was collected from 10 vehicles, ranging from small cars to SUVs and a heavy-duty vehicle with a Pico Scope 5000 Series.
 
@@ -195,9 +195,12 @@ Feel free to use our dataset for research purposes by giving credit to our paper
 B. Groza, P. Iosif and L. Popa, "Constraint-Guided Clustering for Identifying in-Vehicle Electronic Control Units from Voltage Data". [pdf](https://www.aut.upt.ro/~bgroza/Papers/ecu_scan.pdf)
 
 ```
-@article{popa2022ecuprint,
+@article{groza26constraint,
 title={Constraint-Guided Clustering for Identifying in-Vehicle Electronic Control Units from Voltage Data},
 author={Groza, Bogdan and Iosif, Patricia and Popa, Lucian},
+conference={},
+year={2026},
+publisher={}
 }
 ```
 
