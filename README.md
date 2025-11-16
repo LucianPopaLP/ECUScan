@@ -1,22 +1,6 @@
 # Constraint-Guided Clustering for Identifying in-Vehicle Electronic Control Units from Voltage Data
 
-We show that clustering, i.e., unsupervised learning, of voltage characteristics, is in fact more challenging when done on a larger pool of electronic control units as several out-of-the-box clustering methods and metrics will fail to determine the correct number of clusters when exerted over a large dataset. An overview of the voltage dataset distribution using PCA-2 (Principal Component Analysis) is shown below.
-
-<p align="center">
-<img width="640" height="480" alt="PCA2_Cluster_Overview" src="https://github.com/user-attachments/assets/70e42d39-bb90-4eab-8383-fb19d8d8305c" />
-</p>
-
-To overcome this issue, we propose a new methodology that takes advantage of domain-specific constraints, which guide the search toward the correct number
-of electronic control units in a car, or even in a larger pool of units from several cars. We introduce two new metrics: correctness, which measures the success ratio with respect to the constraints, and divergence, which measures the consistency of the clustering, and show that they provide a strong indication for the optimal number of clusters.
-
-<p align="center">
-<img width="7905" height="2380" alt="clustering_procedure_bis_bis" src="https://github.com/user-attachments/assets/123e3bfa-bd30-4ea8-a8a9-9575eb65d4b4" />
-</p>
-
-In this specific context, both metrics prove to be more reliable than the widely used Silhouette score, Davies-Bouldin and Calinski-Harabasz indexes. We successfully test our methodology on the largest dataset available today for in-vehicle voltage characteristics and discover new insights regarding the number of devices. In this repository we share only a part of the entire dataset, for two passenger vehicles, due to file size constraints.
-
-# Repository 
-The repository contains the python code required to reproduce the results from our work on the provided dataset voltage samples (Honda Civic, Dacia Duster). Steps to run all the provided code are detailed below.
+The repository contains the python code required to reproduce the results from our work together with a link and details related to the ECUPrint Aligned dataset. Steps to run all the provided code are detailed below.
 
 ### Prerequisites
 To run the code, ensure you have the following installed:
@@ -39,9 +23,28 @@ Then, all section from the notebook need to be run in order to get the results t
 
 ### Dataset
 
-To allow artificial intelligence algorithms to properly use the ECUPrint raw voltage data for CAN fingerprinting evaluation, we have refined this raw data, since the ECUPrint analysis was done using statistical features only (bit time, plateau time, mean voltage, maximum voltage), without any machine learning approach. Our intention to use the raw voltage data from the original dataset led to some challenges that we have encountered. Based on evaluation of the raw voltage samples for each ID, we have decided to align samples on the rising edge and limit the number of samples to 1600 for passenger cars and 2500 samples for the tractor. 
+The dataset linked in this repository represents the aligned and filtered input used by the Promoter-Censor algorithm proposed in our paper: Constraint-Guided Clustering for Identifying In-Vehicle Electronic Control Units from Voltage Data. 
 
-The updated dataset is called ECUPrint_Aligned, publicly available as archive file (.zip format) on the University website or OneDrive to everyone that endeavors to use it for ECU fingerprinting research topics.
+<img width="6000" height="3062" alt="image" src="https://github.com/user-attachments/assets/7d774436-ed46-4fca-b7aa-57deca9008cc" />
+
+**Motivation**: The original ECUPrint dataset was created by our group three years ago for statistical analysis of ECU voltage samples, where slight misalignments or incomplete entries had only a limited impact. However, for machine-learning classifier benchmarking, we later observed that these inconsistencies led to distorted performance estimates. To address this issue, we sanitized the dataset by aligning and filtering the samples to ensure that the reported results reflect classifier performance rather than data irregularities.
+
+Briefly, the modifications compared to the ECUPrint dataset are the following:
+
+- All bits from the 10 vehicles are aligned (the Python script used for aligned is also available)
+- Samples are cut to exactly 1600 time-steps for passenger cars and 2500 time-steps for the heavy-duty vehicle
+- Acknowledgement bits are removed because they do not come from the ECU that is the sender of the ID
+- Incomplete bits lacking the falling edge were discarded to ensure dataset consistency
+
+As a consequence the following IDs were removed the ECUPrint Aligned Dataset: 0x370 (Corsa), 0x511 (Duster), 0x4DE (Logan), 0x3A9, 0x43C, 0x171 (Ecosport), 0x428 (ix35) and 1 bit was removed for IDs 0x294, 0x19B (Civic). The sanitized dataset retains 175,378 samples from the original 181,874 samples of the ECUPrint dataset.
+
+**Result**: The Ground Truth resulting from the new metholdology is slightly different from the original ECUPrint paper and is available in this pdf.
+
+**Independent corroboration**: We also verified the number of ECUs in the Ford vehicles with a diagnostic tool (FORScan v2.3.65) together with the electrical wiring diagrams and it matches the number of ECUs that we identified using Constraint-Guided Clustering. Documents used for determination of electrical wiring diagrams are:
+
+- Module Communication Diagram from Cardiagn - Ford Fiesta(https://cardiagn.com/2017-2020-ford-fiesta-all-engines-electrical-wiring-diagrams/)
+- Module Communication Diagram from Cardiagn - Ford Ecosport(https://cardiagn.com/ford-ecosport-2017-2022-service-and-repair-manual/)
+- Module Communication Diagram from Cardiagn - Ford Kuga(https://cardiagn.com/2019-ford-kuga-eu-ekke-wiring-diagrams-module-communication-network/)
 
 #### Data links ####
 
@@ -49,43 +52,39 @@ File | Download | Notes
 --- | :---------: | :----
 **ECUPrint_Aligned.zip** | [link1 (University website)](http://localhost) <br /> [link2 (OneDrive)](https://1drv.ms/u/c/eab50b86f61a55f8/Ecyc_vTq6c1ArUZWDtkwfKcBQRwu3CvS3NjIqD9V-0yFNA?e=eqe2Sg) | Aligned ECUPrint CAN voltage samples, allocated per Vehicle, ECU and ID
 
-More details related to the bit aligning concept, applied filters and insights related to the dataset structure and file contents are described below.
+More details related to the bit aligning concept, applied filters and insights related to the dataset structure and file contents are described below.w.
 
-#### Concept ####
+#### Data pre-processing ####
 
 ECUPrint raw voltage data was collected from 10 vehicles, ranging from small cars to SUVs and a heavy-duty vehicle with a Pico Scope 5000 Series.
 
-#### A - Raw Voltage data samples - ECUPrint ####
-
-For each frame carrying a specific ID we have collected samples for an isolated dominant bit, i.e., a transition a transition from recessive to dominant state and back. In the original files from the ECUPrint dataset, the rising edges and falling edges from each dominant bit are not aligned at the same index. That is also why there is a variation of the index when the plateau state of the dominant bit is reached, as shown in the images below for the samples corresponding to ID 4F1 from Hyundai i20 (left image) and to ID 04EF0021 from the John Deere tractor data (right image).
+**Sample Alignment and Trimming** - For each frame carrying a specific ID the ECUPrint dataset contains isolated dominant bits, i.e., a transition from recessive to dominant state and back. In the original files from the ECUPrint dataset, the rising edges and falling edges from each dominant bit are not aligned at the same index, as shown in the images below for the samples corresponding to ID 4F1 from the Hyundai i20 (left image) and to ID 04EF0021 from the John Deere tractor (right image).
 
 <p>
 <img alt="image" src="https://github.com/user-attachments/assets/75f58730-348d-418b-9814-a1d4a5fc1db0" width="49%" /> 
 <img  alt="image" src="https://github.com/user-attachments/assets/05e6c156-cef8-429c-9e21-a8189906602d" width="49%" />
 </p>
 
-#### B - Raw Voltage data samples - ECU Aligned ####
-
-<b> B.1 - Bit Alignment and File Content Harmonization </b> - We decided to align the bits for each ID at the same index, which led to a different number of samples per file. That is why, based on our analysis we decided to preserve only 1600 samples for passenger cars and 2500 samples for the tractor in order to have a common raw data structure and file content. Examples of aligned bit samples are shown in the images below. They correspond to ID 4F1 from Hyundai i20 (left image) and to ID 04EF0021 from the John Deere tractor data (right image).
+We aligned the bits for each ID at the same index, which led to a different number of time-steps per file out of which we preserve only 1600 time-steps for passenger cars and 2500 time-steps for the heavy-duty vehicle. An examples of the newly aligned bits is shown in the images below. They correspond to ID 4F1 from the Hyundai i20 (left image) and to ID 04EF0021 from the John Deere tractor (right image).
 
 <p>
 <img alt="image" src="https://github.com/user-attachments/assets/d09b7c46-c076-460b-bc50-fd4301fafac4" width="49%" />
 <img alt="image" src="https://github.com/user-attachments/assets/86ce5c36-4505-4de7-aa3a-c4d933c6a7e6" width="49%" />
 </p>
 
-<b> B.2 - Removal of Outliers (ACK Bits) </b> - Analyzing the bits from the ECUPrint dataset, we have found some outliers (acknowledge bits instead of genuine dominant bits) that were removed from the alignment process and are not part of the ECU Aligned (Datasets). An example is shown for one of the Honda Civic files that had different samples for ID 19B compared to all other files that had the right samples.
+**Removal of ACK Bits** - Analyzing the bits from the ECUPrint dataset, we have found some acknowledgement bits instead of genuine dominant bits that were removed from the alignment process and are not part of the ECUPrint Aligned Dataset. An example is shown for one of the Honda Civic files that had different samples for ID 19B compared to all other files that had the right samples.
 
 <p>
 <img alt="image" src="https://github.com/user-attachments/assets/ee0c4277-6878-42bc-9cad-3c6314222680" width="49%"/>
 </p>
 
-<b> B.3 - Removal of Outliers (Non-Isolated Bits) </b> - For some IDs, the ECUPrint dataset does not contain single isolated dominant bits. The voltage samples for those bits had a continuous plateau level while for isolated bits, the file ends with the samples of the falling edge. These IDs were removed from the alignment process and are not part of the ECUPrint Aligned Dataset. An example is shown for ID 511 from the Dacia Duster that had different samples compared to all other IDs from the same ECU.
+**Removal of Non-Isolated Bits** - For some IDs, the ECUPrint dataset does not contain single isolated dominant bits. The voltage samples for those bits had a continuous plateau level while for isolated bits, the file ends with the samples of the falling edge. These IDs were removed from the alignment process and are not part of the ECUPrint Aligned Dataset. An example is shown for ID 511 from the Dacia Duster that had different samples compared to all other IDs from the same ECU.
 
 <p>
 <img width="613" height="433" alt="image" src="https://github.com/user-attachments/assets/c883792b-93bc-45a5-a1eb-10bdb43caf42" />
 </p>
 
-<b>B.4 - Establishment of a New ECU Allocation </b> - Based on deep analysis of the voltage samples for all of the IDs, we found that there is a different number of ECUs for some vehicles compared to the determination from ECUPrint. There are two additional ECUs determined for the Ford Kuga and 1 additional ECU determined for the Ford Fiesta and Ford Ecosport while there is 1 ECU less for the Hyundai i20. This is also influenced by the usage of "Unclassified" voltage bits from ECUPrint dataset which were not grouped with a particular ECU since clock skew could not be determined for those IDs based on the collected frames. The updated ECU allocation from the ECU Aligned datasets provides the newly determined ground truth allocation of IDs to ECUs to the best of our knowledge.
+**Establishment of a New ECU Allocation** - Based on the newer analysis of the voltage samples for all of the IDs, we found that there is a different number of ECUs for some vehicles compared to the determination from ECUPrint. There are two additional ECUs determined for the Ford Kuga and 1 additional ECU determined for the Ford Fiesta and Ford Ecosport while there is 1 ECU less for the Hyundai i20. This is also due to the use of some voltage bits that were left as "Unclassified" in the original ECUPrint dataset and were not grouped with a particular ECU since the clock skew could not be determined for those IDs based on the collected frames. The updated ECU allocation from the ECUPrint Aligned dataset provides the newly determined ground truth allocation of IDs to ECUs to the best of our knowledge.
 
 Number | Vehicle | Model year | No. of IDs | No. of identified ECUs | Voltage bits 
 ---- | :------: | :-------: | :--------: | :--------: | :--------:
@@ -103,7 +102,7 @@ Number | Vehicle | Model year | No. of IDs | No. of identified ECUs | Voltage bi
 
 #### Dataset Content ####
 
-The dataset is structured as described below. We provide the raw CAN voltage samples measured with the PicoScope with a sample interval of 2 nanoseconds (sample rate was set to 500 MS/s). The dataset was collected after vehicle startup (cold engine) and is available as CAN voltages collected for 10 cars (175,378 sampled bits) with ECU allocation. Data is allocated to specific ECUs based on the analysis in our work. Note that this distribution is to the best we could ascertain based on our analysis, we do not claim this separation to be absolute.  
+The dataset is structured as described below. We provide the raw CAN voltage samples measured with the PicoScope with a sample interval of 2 nanoseconds (sample rate was set to 500 MS/s). CAN voltages are collected for 10 cars (175,378 sampled bits) with ECU allocation. Data is allocated to specific ECUs based on the analysis in our work. Note that this distribution is to the best we could ascertain based on our analysis, we do not claim this separation to be absolute.  
 
 <b> Folder structure </b> 
 
