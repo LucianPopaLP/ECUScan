@@ -31,7 +31,7 @@ The dataset linked in this repository represents the aligned and filtered input 
 
 Briefly, the modifications compared to the ECUPrint dataset are the following:
 
-- All bits from the 10 vehicles are aligned (the Python script used for alignment is also available)
+- All bits from the 10 vehicles are aligned (the Python scripts used for alignment are also available as [align_data_JD.py](https://github.com/LucianPopaLP/ECUScan/blob/main/misc/align_data_JD.py) for John Deere data and [align_data_car.py](https://github.com/LucianPopaLP/ECUScan/blob/main/misc/align_data_car.py) for passenger cars data as part of this repo, in the misc folder)
 - Samples are cut to exactly 1600 time-steps for passenger cars and 2500 time-steps for the heavy-duty vehicle
 - Acknowledgement bits are removed because they do not come from the ECU that is the sender of the ID
 - Incomplete bits lacking the falling edge were discarded to ensure dataset consistency
