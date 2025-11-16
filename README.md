@@ -1,25 +1,6 @@
 # Constraint-Guided Clustering for Identifying in-Vehicle Electronic Control Units from Voltage Data
 
-The repository contains the python code required to reproduce the results from our work together with a link and details related to the ECUPrint Aligned dataset. Steps to run all the provided code are detailed below.
-
-### Prerequisites
-To run the code, ensure you have the following installed:
-
-- [Python 3.12](https://www.python.org/downloads/release/python-3120/)
-- [pandas](https://pandas.pydata.org/)
-- [scikit-learn](https://scikit-learn.org/)
-- [Jupyter Notebook](https://jupyter.org/)
-- [NumPy](https://numpy.org/)
-- [SciPy](https://scipy.org/)
-- [Matplotlib](https://matplotlib.org/)
-
-### Code
-Once all prerequisites are installed, the following variables from the python code need to be customized:
-- <b>data_path</b> <- set to your location following the example with the provided path
-- <b>scaling</b> <- set to 0 (without) or 1 (with) for choosing without/with rescaling of voltage data that supports clustering improvements
-- <b>nrows</b> <- set to 1600 (passenger cars) or 2400 (heavy industry vehicle) for chossing between number of data samples/file for passenger cars or the heavy industry vehicle
-
-Then, all section from the notebook need to be run in order to get the results that are presented in our work.
+The repository contains the python code required to reproduce the results from our work together with a link and details related to the ECUPrint Aligned dataset and scripts that were used to align and trim the voltage data from original ECUPrint dataset and create the ECUPrint Aligned dataset. 
 
 ### Dataset
 
@@ -187,6 +168,27 @@ ID (hexadecimal)], \
 The metadata is followed by the actual raw voltage samples:
 
 [Voltage data (1600 samples/file for cars and 2500 samples/file for the John Deere tractor)].
+
+### Prerequisites
+
+Steps to run all the provided code are detailed below.
+Then, all section from the notebook need to be run in order to get the results that are presented in our work.
+
+To run the code, ensure you have the following installed:
+
+- [Python 3.12](https://www.python.org/downloads/release/python-3120/)
+- [pandas](https://pandas.pydata.org/)
+- [scikit-learn](https://scikit-learn.org/)
+- [Jupyter Notebook](https://jupyter.org/)
+- [NumPy](https://numpy.org/)
+- [SciPy](https://scipy.org/)
+- [Matplotlib](https://matplotlib.org/)
+
+### Code
+Once all prerequisites are installed, the following variables from the python code need to be customized:
+- <b>data_path</b> <- set to your location following the example with the provided path
+- <b>scaling</b> <- set to 0 (without) or 1 (with) for choosing without/with rescaling of voltage data that supports clustering improvements
+- <b>nrows</b> <- set to 1600 (passenger cars) or 2400 (heavy industry vehicle) for chossing between number of data samples/file for passenger cars or the heavy industry vehicle
 
 ### Publication ###
 
