@@ -38,13 +38,13 @@ Briefly, the modifications compared to the ECUPrint dataset are the following:
 
 As a consequence the following IDs were removed the ECUPrint Aligned Dataset: 0x370 (Corsa), 0x511 (Duster), 0x4DE (Logan), 0x3A9, 0x43C, 0x171 (Ecosport), 0x428 (ix35) and 1 bit was removed for IDs 0x294, 0x19B (Civic). The sanitized dataset retains 175,378 samples from the original 181,874 samples of the ECUPrint dataset.
 
-**Result**: The Ground Truth resulting from the new metholdology is slightly different from the original ECUPrint paper and is available in this pdf.
+**Result**: The Ground Truth resulting from the new metholdology is slightly different from the original ECUPrint paper and is available in this [pdf](https://www.aut.upt.ro/~bgroza/projects/ecuprint-aligned/ecu_scan_gt.pdf).
 
 **Independent corroboration**: We also verified the number of ECUs in the Ford vehicles with a diagnostic tool (FORScan v2.3.65) together with the electrical wiring diagrams and it matches the number of ECUs that we identified using Constraint-Guided Clustering. Documents used for determination of electrical wiring diagrams are:
 
-- Module Communication Diagram from Cardiagn - Ford Fiesta(https://cardiagn.com/2017-2020-ford-fiesta-all-engines-electrical-wiring-diagrams/)
-- Module Communication Diagram from Cardiagn - Ford Ecosport(https://cardiagn.com/ford-ecosport-2017-2022-service-and-repair-manual/)
-- Module Communication Diagram from Cardiagn - Ford Kuga(https://cardiagn.com/2019-ford-kuga-eu-ekke-wiring-diagrams-module-communication-network/)
+- [Module Communication Diagram from Cardiagn - Ford Fiesta](https://cardiagn.com/2017-2020-ford-fiesta-all-engines-electrical-wiring-diagrams/)
+- [Module Communication Diagram from Cardiagn - Ford Ecosport](https://cardiagn.com/ford-ecosport-2017-2022-service-and-repair-manual/)
+- [Module Communication Diagram from Cardiagn - Ford Kuga](https://cardiagn.com/2019-ford-kuga-eu-ekke-wiring-diagrams-module-communication-network/)
 
 #### Data links ####
 
@@ -52,7 +52,7 @@ File | Download | Notes
 --- | :---------: | :----
 **ECUPrint_Aligned.zip** | [link1 (University website)](http://localhost) <br /> [link2 (OneDrive)](https://1drv.ms/u/c/eab50b86f61a55f8/Ecyc_vTq6c1ArUZWDtkwfKcBQRwu3CvS3NjIqD9V-0yFNA?e=eqe2Sg) | Aligned ECUPrint CAN voltage samples, allocated per Vehicle, ECU and ID
 
-More details related to the bit aligning concept, applied filters and insights related to the dataset structure and file contents are described below.w.
+More details related to the bit aligning concept, applied filters and insights related to the dataset structure and file contents are described below.
 
 #### Data pre-processing ####
 
