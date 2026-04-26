@@ -197,12 +197,14 @@ Feel free to use our dataset for research purposes by giving credit to our paper
 B. Groza, P. Iosif and L. Popa, "Constraint-Guided Clustering for Identifying in-Vehicle Electronic Control Units from Voltage Data". [pdf](https://www.aut.upt.ro/~bgroza/Papers/ecu_scan.pdf)
 
 ```
-@article{groza26constraint,
-title={Constraint-Guided Clustering for Identifying in-Vehicle Electronic Control Units from Voltage Data},
-author={Groza, Bogdan and Iosif, Patricia and Popa, Lucian},
-conference={},
-year={2026},
-publisher={}
+@inproceedings{groza2026constraint,
+  title={Constraint-Guided Clustering for Identifying in-Vehicle Electronic Control Units from Voltage Data},
+  author={Groza, Bogdan and Iosif, Patricia and Popa, Lucian},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={40},
+  number={26},
+  pages={21361--21368},
+  year={2026}
 }
 ```
 
